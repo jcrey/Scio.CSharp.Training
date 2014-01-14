@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Drones.Loggers;
+using Moq;
 using NUnit.Framework;
 using Drones.Builders;
 using Drones.CommandReaders;
@@ -11,6 +12,7 @@ namespace Drones.Tests.CommandReadersTests.CreateArenaCommandReaderTests
         private Mock<IContext> context;
         private Mock<IArenaBuilder> arenaBuilder;
         private CreateArenaCommandReader createArenaCommandReader;
+        private Mock<ILogger> logger;
 
         const int latitude = 5;
         const int longitude = 10;
@@ -21,10 +23,11 @@ namespace Drones.Tests.CommandReadersTests.CreateArenaCommandReaderTests
             this.context = new Mock<IContext>();
             this.arenaBuilder = new Mock<IArenaBuilder>();
             this.context.SetupGet(c => c.ArenaBuilder).Returns(this.arenaBuilder.Object);
+            this.logger = new Mock<ILogger>();
 
 
             this.context.SetupProperty(c => c.Arena);
-            this.createArenaCommandReader = new CreateArenaCommandReader(this.context.Object,null);
+            this.createArenaCommandReader = new CreateArenaCommandReader(this.context.Object, this.logger.Object);
         }
 
         [Test]

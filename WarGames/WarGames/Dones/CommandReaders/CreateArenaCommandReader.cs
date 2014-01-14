@@ -14,6 +14,7 @@ namespace Drones.CommandReaders
         public CreateArenaCommandReader(IContext context, ILogger logger)
             : base(regexPattern, context, logger)
         {
+            
         }
 
         public override void Process(string command)

@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Drones.Loggers;
+using Moq;
 using NUnit.Framework;
 using Drones.Builders;
 using Drones.CommandReaders;
@@ -19,6 +20,7 @@ namespace Drones.Tests.CommandReadersTests.CreateDroneCommandReaderTests
         private Mock<IDroneBuilder> droneBuilder;
         private CreateDroneCommandReader _createDroneCommandReader;
         private Mock<IDrone> drone;
+        private Mock<ILogger> logger;
 
 
         [SetUp]
@@ -35,10 +37,12 @@ namespace Drones.Tests.CommandReadersTests.CreateDroneCommandReaderTests
 
             this.drone = new Mock<IDrone>();
             this.droneBuilder.Setup(rb => rb.Create())
-                             .Returns(this.drone.Object);
+                .Returns(this.drone.Object);
+
+            this.logger = new Mock<ILogger>();
 
 
-            this._createDroneCommandReader = new CreateDroneCommandReader(this.context.Object, null);
+            this._createDroneCommandReader = new CreateDroneCommandReader(this.context.Object, this.logger.Object);
         }
 
         private string BuildCommand(uint lat, uint lng, DroneDirection direction)

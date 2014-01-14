@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Drones.Commands;
+using Moq;
 using NUnit.Framework;
 using Drones.CommandReaders;
 
@@ -9,17 +11,20 @@ namespace Drones.Tests.CommandReadersTests.MoveCommandReaderTests
     {
         private Mock<IContext> context;
         private Mock<IDrone> drone;
-        private MoveDroneCommandReader moveCommandReader; 
+        private MoveDroneCommandReader moveCommandReader;
+        private Mock<IEnumerable<ICommand>> commands;
 
         [SetUp]
         public void Setup()
         {
             this.context = new Mock<IContext>();
             this.drone = new Mock<IDrone>();
+            this.commands = new Mock<IEnumerable<ICommand>>();
+
 
             this.context.SetupGet(c => c.LatestDrone).Returns(this.drone.Object);
 
-            this.moveCommandReader = new MoveDroneCommandReader(this.context.Object,null, null);
+            this.moveCommandReader = new MoveDroneCommandReader(this.context.Object,this.commands.Object, null);
         }
 
         [Test]
